@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ProductCatalog.Domain.ValueObjects;
 
-namespace ProductCatalog.Domain.ValueObjects
+public record Sku
 {
-    public record Sku
+    public string Value { get; }  // Add this property
+
+    public Sku(string value)
     {
-        private readonly string _value;
+        if (!System.Text.RegularExpressions.Regex.IsMatch(value, @"^[A-Z]{3}-[0-9]{4}$"))
+            throw new ArgumentException("SKU must be in format XXX-0000");
 
-        public Sku(string value)
-        {
-            if (!System.Text.RegularExpressions.Regex.IsMatch
-                (value, @"^[A-Z]{3}-[0-9]{4}$"))
-                throw new ArgumentException("SKU must be in format XXX-0000");
-            _value = value;
-        }
-
-        public override string ToString() => _value;
+        Value = value;  // Use the property
     }
+
+    public override string ToString() => Value;
 }
